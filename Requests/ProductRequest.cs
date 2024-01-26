@@ -1,8 +1,7 @@
-namespace API_FARMACIA_PM.Models;
+namespace API_FARMACIA_PM.Requests;
 
-public class ProductModel 
+public class ProductRequest 
 {
-    public int Id { get; set; }
     public string Name { get; set; } = null!;
     public decimal Price { get; set; }
     public DateTime ExpirationDate { get; set; }
