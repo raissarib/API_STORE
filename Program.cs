@@ -1,10 +1,12 @@
 using API_FARMACIA_PM.Data.SqlServer;
+using API_FARMACIA_PM.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<SqlServerContext>();
 
 // Add services to the container.
+builder.Services.AddScoped<ProductRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

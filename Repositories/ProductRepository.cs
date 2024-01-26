@@ -24,6 +24,7 @@ public class ProductRepository
         };
 
         var result = await _sqlServer.Products.AddAsync(productModel);
+        await _sqlServer.SaveChangesAsync();
         return result.Entity;
 
     }

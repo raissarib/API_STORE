@@ -3,6 +3,6 @@ namespace API_FARMACIA_PM.Requests;
 
 public class DiscountRequest 
 {
-    public decimal Value { get; set; }
+    public double Value { get; set; }
     public IList<TypeUserModel>? TypeUser { get; set; }
 }

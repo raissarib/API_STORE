@@ -19,7 +19,6 @@ public class StoreRepository
         StoreModel storeModel = new StoreModel 
         {
             Number = storeRequest.Number,
-            Products = storeRequest.Products,
             Name = storeRequest.Name,
             City = storeRequest.City,
             Phone = storeRequest.Phone

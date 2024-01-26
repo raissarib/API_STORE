@@ -1,5 +1,6 @@
 using API_FARMACIA_PM.Models;
 using Microsoft.EntityFrameworkCore;
+
 namespace API_FARMACIA_PM.Data.SqlServer;
 
 public class SqlServerContext : DbContext
@@ -13,6 +14,18 @@ public class SqlServerContext : DbContext
             "Server=localhost;Initial Catalog=master;User Id=sa;Password=SqlServer2019!;Encrypt=True;TrustServerCertificate=True"
         );
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ProductModel>(p =>
+        {
+            p.Property(x => x.Id).UseIdentityColumn();
+            p.Property(x => x.Name).IsRequired();
+            p.Property(x => x.Price).IsRequired();
+            p.Property(x => x.ExpirationDate).IsRequired();
+        });
+    }
+
     public DbSet<DiscountModel> Discounts { get; set; }
     public DbSet<ProductModel> Products { get; set; }
     public DbSet<StoreModel> Stores { get; set; }
