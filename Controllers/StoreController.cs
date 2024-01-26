@@ -1,3 +1,4 @@
+using API_FARMACIA_PM.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_FARMACIA_PM.controllers;
@@ -5,10 +6,11 @@ namespace API_FARMACIA_PM.controllers;
 [ApiController]
 public class StoreController : ControllerBase
 {
-
-    public StoreController()
+    private readonly StoreRepository _storeRepository;
+    
+    public StoreController(StoreRepository storeRepository)
     {
-       
+      _storeRepository = storeRepository;
     }
 
 }
