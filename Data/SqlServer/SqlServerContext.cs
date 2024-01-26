@@ -16,6 +16,6 @@ public class SqlServerContext : DbContext
     public DbSet<DiscountModel> Discounts { get; set; }
     public DbSet<ProductModel> Products { get; set; }
     public DbSet<StoreModel> Stores { get; set; }
-    public DbSet<TypeUserModel> TypeUserModels { get; set; }
+    public DbSet<TypeUserModel> TypeUsers { get; set; }
     public DbSet<UserModel> Users { get; set; }
 }
