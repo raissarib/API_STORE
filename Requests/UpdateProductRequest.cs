@@ -1,9 +1,9 @@
 namespace API_FARMACIA_PM.Requests;
 
-public class UpdateStockRequest 
+public class UpdateProductRequest 
 {
     public int Id { get; set; }
-    public int Quantity { get; set; }
+    public string Name { get; set; } = null!;
     
     
 }

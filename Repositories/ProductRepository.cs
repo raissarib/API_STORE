@@ -1,7 +1,6 @@
 using API_FARMACIA_PM.Data.SqlServer;
 using API_FARMACIA_PM.Models;
 using API_FARMACIA_PM.Requests;
-using Microsoft.Identity.Client;
 
 namespace API_FARMACIA_PM.Repositories;
 
@@ -28,6 +27,35 @@ public class ProductRepository
         await _sqlServer.SaveChangesAsync();
         return result.Entity;
 
+    }
+
+    public async Task<ProductModel?> GetProduct(int id)
+    {
+        return await _sqlServer.Products.FindAsync(id);
+    }
+
+    public async Task<ProductModel?> UpdateProduct(UpdateProductRequest updateProductRequest)
+    {
+        ProductModel? product = await _sqlServer.Products.FindAsync(updateProductRequest.Id);
+        if (product is not null)
+        {
+            product.Name = updateProductRequest.Name;
+            await _sqlServer.SaveChangesAsync();
+            return product;
+        }
+        return null;
+    }
+
+    public async Task<ProductModel?> DeleteProduct(int id)
+    {
+        ProductModel? product = await _sqlServer.Products.FindAsync(id);
+        if (product is not null)
+        {
+            _sqlServer.Products.Remove(product);
+            await _sqlServer.SaveChangesAsync();
+            return product;
+        }
+        return null;
     }
 }
 

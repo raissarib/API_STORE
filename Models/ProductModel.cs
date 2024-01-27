@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace API_FARMACIA_PM.Models;
 
 public class ProductModel 
@@ -7,6 +9,9 @@ public class ProductModel
     public string Manufacturer { get; set; } = null!;
     public string Description { get; set; } = null!;
     public string Brand { get; set; } = null!;
-    public IList<PricesModel> Prices { get; set; } = null!;
-    public StockModel Stock { get; internal set; } = null!;
+    [JsonIgnore]
+    public IList<PricesModel>? Prices { get; set; }
+    [JsonIgnore]
+    public StockModel? Stock { get; internal set; }
+
 }

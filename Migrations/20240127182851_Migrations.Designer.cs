@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_FARMACIA_PM.Migrations
 {
     [DbContext(typeof(SqlServerContext))]
-    [Migration("20240127022909_Migrations")]
+    [Migration("20240127182851_Migrations")]
     partial class Migrations
     {
         /// <inheritdoc />
@@ -76,7 +76,7 @@ namespace API_FARMACIA_PM.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StockId")
+                    b.Property<int?>("StockId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -154,8 +154,7 @@ namespace API_FARMACIA_PM.Migrations
                 {
                     b.HasOne("API_FARMACIA_PM.Models.StockModel", "Stock")
                         .WithMany("Products")
-                        .HasForeignKey("StockId")
-                        .IsRequired();
+                        .HasForeignKey("StockId");
 
                     b.Navigation("Stock");
                 });
@@ -182,8 +181,7 @@ namespace API_FARMACIA_PM.Migrations
 
             modelBuilder.Entity("API_FARMACIA_PM.Models.StoreModel", b =>
                 {
-                    b.Navigation("Stock")
-                        .IsRequired();
+                    b.Navigation("Stock");
                 });
 #pragma warning restore 612, 618
         }

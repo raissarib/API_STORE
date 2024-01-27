@@ -1,8 +1,6 @@
 using API_FARMACIA_PM.Repositories;
 using API_FARMACIA_PM.Requests;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace API_FARMACIA_PM.controllers
 {
@@ -23,7 +21,7 @@ namespace API_FARMACIA_PM.controllers
             try
             {
                 var createdProduct = await _productRepository.CreateProduct(productRequest);
-                return Ok( new {Produto = createdProduct});
+                return Ok(new { Produto = createdProduct });
             }
             catch (Exception ex)
             {
@@ -31,9 +29,58 @@ namespace API_FARMACIA_PM.controllers
             }
         }
 
-        private Task<IActionResult> GetProduct()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProduct(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var product = await _productRepository.GetProduct(id);
+
+                if (product is null)
+                    return NotFound($"Produto com ID {id} não encontrado.");
+
+                return Ok(new { Produto = product });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao obter o produto: {ex.Message}");
+            }
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateProduct(
+            [FromBody] UpdateProductRequest updateProductRequest
+        )
+        {
+            try
+            {
+                var updateProduct = await _productRepository.UpdateProduct(updateProductRequest);
+                if (updateProduct is null)
+                    return NotFound($"Produto com ID {updateProductRequest.Id} não encontrado.");
+                return Ok(new { Produto = updateProduct });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao atualizar o produto: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            try
+            {
+                var product = await _productRepository.DeleteProduct(id);
+
+                if (product is null)
+                    return NotFound($"Produto com ID {id} não encontrado.");
+
+                return Ok(new { Produto = product });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao excluir o produto: {ex.Message}");
+            }
         }
     }
 }

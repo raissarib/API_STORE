@@ -2,7 +2,6 @@ using API_FARMACIA_PM.Data.SqlServer;
 using API_FARMACIA_PM.Models;
 using API_FARMACIA_PM.Requests;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace API_FARMACIA_PM.Repositories;
 

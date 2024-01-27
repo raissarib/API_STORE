@@ -6,4 +6,5 @@ public class ProductRequest
     public string Manufacturer { get; set; } = null!;
     public string Description { get; set; } = null!;
     public string Brand { get; set; } = null!;
+    public int StockId { get; set; }
 }

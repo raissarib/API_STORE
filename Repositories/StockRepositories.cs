@@ -2,7 +2,6 @@ using API_FARMACIA_PM.Data.SqlServer;
 using API_FARMACIA_PM.Models;
 using API_FARMACIA_PM.Requests;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace API_FARMACIA_PM.Repositories;
 
@@ -15,7 +14,6 @@ public class StockRepository(SqlServerContext sqlServer)
         StockModel stockModel = new StockModel 
         {
             StoreId = stockRequest.StoreId,
-            ProductId = stockRequest.ProductId,
             Quantity = stockRequest.Quantity
         };
 
@@ -27,7 +25,7 @@ public class StockRepository(SqlServerContext sqlServer)
 
     public async Task<StockModel?> GetStock(int id)
     {
-        return await _sqlServer.Stocks.Include(p => p.Store).Where(p => p.Id == id).FirstOrDefaultAsync();
+        return await _sqlServer.Stocks.Include(p => p.Store).Include(p => p.Products).Where(p => p.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task<StockModel?> UpdateStock(UpdateStockRequest updateStockRequest)
