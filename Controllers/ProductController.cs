@@ -47,6 +47,24 @@ namespace API_FARMACIA_PM.controllers
             }
         }
 
+        [HttpGet("stock-product/{storeId}")]
+        public async Task<IActionResult> GetProductsStore(int storeId)
+        {
+            try
+            {
+                var products = await _productRepository.GetProductsStore(storeId);
+
+                if (products == null || !products.Any())
+                    return NotFound($"Nenhum produto encontrado para a loja com ID {storeId}.");
+
+                return Ok(new { Produtos = products });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao obter produtos por loja: {ex.Message}");
+            }
+        }
+
         [HttpPut("update")]
         public async Task<IActionResult> UpdateProduct(
             [FromBody] UpdateProductRequest updateProductRequest

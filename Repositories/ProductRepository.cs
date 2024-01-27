@@ -14,9 +14,9 @@ public class ProductRepository
         _sqlServer = sqlServer;
     }
 
-    public async Task<ProductModel> CreateProduct(ProductRequest productRequest) 
+    public async Task<ProductModel> CreateProduct(ProductRequest productRequest)
     {
-        ProductModel productModel = new ProductModel 
+        ProductModel productModel = new ProductModel
         {
             Name = productRequest.Name,
             Manufacturer = productRequest.Manufacturer,
@@ -27,12 +27,15 @@ public class ProductRepository
         var result = await _sqlServer.Products.AddAsync(productModel);
         await _sqlServer.SaveChangesAsync();
         return result.Entity;
-
     }
 
     public async Task<ProductModel?> GetProduct(int id)
     {
-        return await _sqlServer.Products.Include(p => p.Prices).Include(p => p.Stocks).Where(p => p.Id == id).FirstOrDefaultAsync();
+        return await _sqlServer
+            .Products.Include(p => p.Prices)
+            .Include(p => p.Stocks)
+            .Where(p => p.Id == id)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<ProductModel?> UpdateProduct(UpdateProductRequest updateProductRequest)
@@ -58,5 +61,9 @@ public class ProductRepository
         }
         return null;
     }
-}
 
+    public async Task<IEnumerable<StockModel>> GetProductsStore(int storeId)
+    {
+        return await _sqlServer.Stocks.Include(p => p.Product).Where(p => p.StoreId == storeId).ToListAsync();
+    }
+}
