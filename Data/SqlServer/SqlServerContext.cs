@@ -57,12 +57,14 @@ public class SqlServerContext : DbContext
             p.Property(x => x.Id).UseIdentityColumn();
             p.Property(x => x.Quantity).IsRequired();
 
-            p.HasMany(x => x.Products)
-            .WithOne(x => x.Stock)
+            p.HasOne(x => x.Product)
+            .WithMany(x => x.Stocks)
+            .HasForeignKey(x => x.ProductId)
             .OnDelete(DeleteBehavior.ClientSetNull);
 
             p.HasOne(x => x.Store)
-            .WithOne(x => x.Stock)
+            .WithMany(x => x.Stocks)
+            .HasForeignKey(x => x.StoreId)
             .OnDelete(DeleteBehavior.ClientSetNull);
         });
 

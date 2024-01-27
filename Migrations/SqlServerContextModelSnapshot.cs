@@ -73,12 +73,7 @@ namespace API_FARMACIA_PM.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StockId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("StockId");
 
                     b.ToTable("Products");
                 });
@@ -102,8 +97,9 @@ namespace API_FARMACIA_PM.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("StoreId");
 
                     b.ToTable("Stocks");
                 });
@@ -147,21 +143,19 @@ namespace API_FARMACIA_PM.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("API_FARMACIA_PM.Models.ProductModel", b =>
-                {
-                    b.HasOne("API_FARMACIA_PM.Models.StockModel", "Stock")
-                        .WithMany("Products")
-                        .HasForeignKey("StockId");
-
-                    b.Navigation("Stock");
-                });
-
             modelBuilder.Entity("API_FARMACIA_PM.Models.StockModel", b =>
                 {
-                    b.HasOne("API_FARMACIA_PM.Models.StoreModel", "Store")
-                        .WithOne("Stock")
-                        .HasForeignKey("API_FARMACIA_PM.Models.StockModel", "StoreId")
+                    b.HasOne("API_FARMACIA_PM.Models.ProductModel", "Product")
+                        .WithMany("Stocks")
+                        .HasForeignKey("ProductId")
                         .IsRequired();
+
+                    b.HasOne("API_FARMACIA_PM.Models.StoreModel", "Store")
+                        .WithMany("Stocks")
+                        .HasForeignKey("StoreId")
+                        .IsRequired();
+
+                    b.Navigation("Product");
 
                     b.Navigation("Store");
                 });
@@ -169,16 +163,13 @@ namespace API_FARMACIA_PM.Migrations
             modelBuilder.Entity("API_FARMACIA_PM.Models.ProductModel", b =>
                 {
                     b.Navigation("Prices");
-                });
 
-            modelBuilder.Entity("API_FARMACIA_PM.Models.StockModel", b =>
-                {
-                    b.Navigation("Products");
+                    b.Navigation("Stocks");
                 });
 
             modelBuilder.Entity("API_FARMACIA_PM.Models.StoreModel", b =>
                 {
-                    b.Navigation("Stock");
+                    b.Navigation("Stocks");
                 });
 #pragma warning restore 612, 618
         }

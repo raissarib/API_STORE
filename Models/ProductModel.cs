@@ -9,9 +9,7 @@ public class ProductModel
     public string Manufacturer { get; set; } = null!;
     public string Description { get; set; } = null!;
     public string Brand { get; set; } = null!;
-    [JsonIgnore]
     public IList<PricesModel>? Prices { get; set; }
-    [JsonIgnore]
-    public StockModel? Stock { get; internal set; }
+    public IList<StockModel>? Stocks { get; set; }
 
 }

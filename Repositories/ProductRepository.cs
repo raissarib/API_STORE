@@ -1,6 +1,7 @@
 using API_FARMACIA_PM.Data.SqlServer;
 using API_FARMACIA_PM.Models;
 using API_FARMACIA_PM.Requests;
+using Microsoft.EntityFrameworkCore;
 
 namespace API_FARMACIA_PM.Repositories;
 
@@ -31,7 +32,7 @@ public class ProductRepository
 
     public async Task<ProductModel?> GetProduct(int id)
     {
-        return await _sqlServer.Products.FindAsync(id);
+        return await _sqlServer.Products.Include(p => p.Prices).Include(p => p.Stocks).Where(p => p.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task<ProductModel?> UpdateProduct(UpdateProductRequest updateProductRequest)

@@ -26,7 +26,7 @@ public class StoreRepository(SqlServerContext sqlServer)
 
     public async Task<StoreModel?> GetStore(int id)
     {
-        return await _sqlServer.Stores.Include(p => p.Stock).Where(p => p.Id == id).FirstOrDefaultAsync();
+        return await _sqlServer.Stores.Include(p => p.Stocks).Where(p => p.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task<StoreModel?> UpdateStore(UpdateStoreRequest updateStoreRequest)
