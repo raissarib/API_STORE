@@ -13,7 +13,7 @@ public class PricesRepository
         _sqlServer = sqlServer;
     }
 
-    public async Task<PricesModel> CreatePrice(PricesRequest pricesRequest) 
+    public async Task<PricesModel> CreatePrices(PricesRequest pricesRequest) 
     {
         PricesModel pricesModel = new PricesModel 
         {
@@ -29,4 +29,37 @@ public class PricesRepository
         return result.Entity;
 
     }
+
+    public async Task<PricesModel?> GetPrices(int id)
+    {
+        return await _sqlServer.Prices.FindAsync(id);
+    }
+
+    public async Task<PricesModel?> UpdatePrices(UpdatePricesRequest updatePricesRequest)
+    {
+        PricesModel? prices = await _sqlServer.Prices.FindAsync(updatePricesRequest.Id);
+        if (prices is not null)
+        {
+            prices.Price = updatePricesRequest.Price;
+            prices.EffectiveDate = updatePricesRequest.EffectiveDate;
+            prices.EndDate = updatePricesRequest.EndDate;
+            await _sqlServer.SaveChangesAsync();
+            return prices;
+        }
+        return null;
+    }
+
+    public async Task<PricesModel?> DeletePrices(int id)
+    {
+        PricesModel? prices = await _sqlServer.Prices.FindAsync(id);
+        if (prices is not null)
+        {
+            _sqlServer.Prices.Remove(prices);
+            await _sqlServer.SaveChangesAsync();
+            return prices;
+        }
+        return null;
+    }
+
+
 }

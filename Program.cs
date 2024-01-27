@@ -10,6 +10,7 @@ builder.Services.AddDbContext<SqlServerContext>();
 builder.Services.AddScoped<ProductRepository>();
 builder.Services.AddScoped<StoreRepository>();
 builder.Services.AddScoped<StockRepository>();
+builder.Services.AddScoped<PricesRepository>();
 
 builder.Services.AddControllers().AddJsonOptions(c => c.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
