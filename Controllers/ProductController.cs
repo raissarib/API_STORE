@@ -23,7 +23,7 @@ namespace API_FARMACIA_PM.controllers
             try
             {
                 var createdProduct = await _productRepository.CreateProduct(productRequest);
-                return Ok( new { id = createdProduct.Id, Produto = createdProduct});
+                return Ok( new {Produto = createdProduct});
             }
             catch (Exception ex)
             {

@@ -7,5 +7,5 @@ public class StoreModel
     public string Location { get; set; } = null!;
     public string Phone { get; set; } = null!;
     public string Manager { get; set; } = null!;
-    public StockModel Stock { get; internal set; } = null!;
+    public StockModel? Stock { get; internal set; }
 }

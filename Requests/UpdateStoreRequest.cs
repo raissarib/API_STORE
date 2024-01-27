@@ -1,10 +1,9 @@
 using API_FARMACIA_PM.Models;
 namespace API_FARMACIA_PM.Requests;
 
-public class StoreRequest 
+public class UpdateStoreRequest 
 {
-    public string Name { get; set; } = null!;
-    public string Location { get; set; } = null!;
+    public int Id { get; set; }
     public string Phone { get; set; } = null!;
     public string Manager { get; set; } = null!;
     
