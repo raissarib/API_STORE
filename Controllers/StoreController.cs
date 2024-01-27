@@ -54,13 +54,12 @@ public class StoreController : ControllerBase
         {
             var updateStore = await _storeRepository.UpdateStore(updateStoreRequest);
             if (updateStore is null)
-              return NotFound($"Loja com ID {updateStoreRequest.Id} não encontrada.");
-              return Ok(new { Loja = updateStore });
-
+                return NotFound($"Loja com ID {updateStoreRequest.Id} não encontrada.");
+            return Ok(new { Loja = updateStore });
         }
         catch (Exception ex)
         {
-            return BadRequest($"Erro ao criar a loja: {ex.Message}");
+            return BadRequest($"Erro ao atualizar a loja: {ex.Message}");
         }
     }
 
@@ -78,7 +77,7 @@ public class StoreController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest($"Erro ao obter a loja: {ex.Message}");
+            return BadRequest($"Erro ao excluir a loja: {ex.Message}");
         }
-}
+    }
 }

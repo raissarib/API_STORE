@@ -1,6 +1,7 @@
 using API_FARMACIA_PM.Data.SqlServer;
 using API_FARMACIA_PM.Models;
 using API_FARMACIA_PM.Requests;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
 namespace API_FARMACIA_PM.Repositories;
@@ -26,7 +27,7 @@ public class StoreRepository(SqlServerContext sqlServer)
 
     public async Task<StoreModel?> GetStore(int id)
     {
-        return await _sqlServer.Stores.FindAsync(id);
+        return await _sqlServer.Stores.Include(p => p.Stock).Where(p => p.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task<StoreModel?> UpdateStore(UpdateStoreRequest updateStoreRequest)
