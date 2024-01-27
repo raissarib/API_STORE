@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_FARMACIA_PM.Migrations
 {
     [DbContext(typeof(SqlServerContext))]
-    [Migration("20240126223633_Migrations")]
+    [Migration("20240127022909_Migrations")]
     partial class Migrations
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace API_FARMACIA_PM.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("API_FARMACIA_PM.Models.DiscountModel", b =>
+            modelBuilder.Entity("API_FARMACIA_PM.Models.PricesModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,12 +33,23 @@ namespace API_FARMACIA_PM.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("Value")
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Discounts");
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Prices");
                 });
 
             modelBuilder.Entity("API_FARMACIA_PM.Models.ProductModel", b =>
@@ -49,24 +60,55 @@ namespace API_FARMACIA_PM.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("ExpirationDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Manufacturer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int?>("StoreModelId")
+                    b.Property<int>("StockId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreModelId");
+                    b.HasIndex("StockId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("API_FARMACIA_PM.Models.StockModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StoreId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StoreId")
+                        .IsUnique();
+
+                    b.ToTable("Stocks");
                 });
 
             modelBuilder.Entity("API_FARMACIA_PM.Models.StoreModel", b =>
@@ -77,16 +119,17 @@ namespace API_FARMACIA_PM.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("City")
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Manager")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -97,92 +140,50 @@ namespace API_FARMACIA_PM.Migrations
                     b.ToTable("Stores");
                 });
 
-            modelBuilder.Entity("API_FARMACIA_PM.Models.TypeUserModel", b =>
+            modelBuilder.Entity("API_FARMACIA_PM.Models.PricesModel", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.HasOne("API_FARMACIA_PM.Models.ProductModel", "Product")
+                        .WithMany("Prices")
+                        .HasForeignKey("ProductId")
+                        .IsRequired();
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("DiscountModelId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DiscountModelId");
-
-                    b.ToTable("TypeUsers");
-                });
-
-            modelBuilder.Entity("API_FARMACIA_PM.Models.UserModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TypeUserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TypeUserId");
-
-                    b.ToTable("Users");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("API_FARMACIA_PM.Models.ProductModel", b =>
                 {
-                    b.HasOne("API_FARMACIA_PM.Models.StoreModel", null)
+                    b.HasOne("API_FARMACIA_PM.Models.StockModel", "Stock")
                         .WithMany("Products")
-                        .HasForeignKey("StoreModelId");
-                });
-
-            modelBuilder.Entity("API_FARMACIA_PM.Models.TypeUserModel", b =>
-                {
-                    b.HasOne("API_FARMACIA_PM.Models.DiscountModel", null)
-                        .WithMany("TypeUser")
-                        .HasForeignKey("DiscountModelId");
-                });
-
-            modelBuilder.Entity("API_FARMACIA_PM.Models.UserModel", b =>
-                {
-                    b.HasOne("API_FARMACIA_PM.Models.TypeUserModel", "TypeUser")
-                        .WithMany("User")
-                        .HasForeignKey("TypeUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("StockId")
                         .IsRequired();
 
-                    b.Navigation("TypeUser");
+                    b.Navigation("Stock");
                 });
 
-            modelBuilder.Entity("API_FARMACIA_PM.Models.DiscountModel", b =>
+            modelBuilder.Entity("API_FARMACIA_PM.Models.StockModel", b =>
                 {
-                    b.Navigation("TypeUser");
+                    b.HasOne("API_FARMACIA_PM.Models.StoreModel", "Store")
+                        .WithOne("Stock")
+                        .HasForeignKey("API_FARMACIA_PM.Models.StockModel", "StoreId")
+                        .IsRequired();
+
+                    b.Navigation("Store");
                 });
 
-            modelBuilder.Entity("API_FARMACIA_PM.Models.StoreModel", b =>
+            modelBuilder.Entity("API_FARMACIA_PM.Models.ProductModel", b =>
+                {
+                    b.Navigation("Prices");
+                });
+
+            modelBuilder.Entity("API_FARMACIA_PM.Models.StockModel", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("API_FARMACIA_PM.Models.TypeUserModel", b =>
+            modelBuilder.Entity("API_FARMACIA_PM.Models.StoreModel", b =>
                 {
-                    b.Navigation("User");
+                    b.Navigation("Stock")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

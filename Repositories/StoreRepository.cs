@@ -5,26 +5,22 @@ using Microsoft.Identity.Client;
 
 namespace API_FARMACIA_PM.Repositories;
 
-public class StoreRepository
+public class StoreRepository(SqlServerContext sqlServer)
 {
-    private readonly SqlServerContext _sqlServer;
-
-    public StoreRepository(SqlServerContext sqlServer)
-    {
-        _sqlServer = sqlServer;
-    }
+    private readonly SqlServerContext _sqlServer = sqlServer;
 
     public async Task<StoreModel> CreateStore(StoreRequest storeRequest) 
     {
         StoreModel storeModel = new StoreModel 
         {
-            Number = storeRequest.Number,
             Name = storeRequest.Name,
-            City = storeRequest.City,
-            Phone = storeRequest.Phone
+            Location = storeRequest.Location,
+            Phone = storeRequest.Phone,
+            Manager = storeRequest.Manager
         };
 
         var result = await _sqlServer.Stores.AddAsync(storeModel);
+        await _sqlServer.SaveChangesAsync();
         return result.Entity;
 
     }

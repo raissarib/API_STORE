@@ -19,8 +19,9 @@ public class ProductRepository
         ProductModel productModel = new ProductModel 
         {
             Name = productRequest.Name,
-            Price = productRequest.Price,
-            ExpirationDate = productRequest.ExpirationDate
+            Manufacturer = productRequest.Manufacturer,
+            Description = productRequest.Description,
+            Brand = productRequest.Brand
         };
 
         var result = await _sqlServer.Products.AddAsync(productModel);
