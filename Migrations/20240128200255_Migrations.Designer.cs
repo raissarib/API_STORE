@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_FARMACIA_PM.Migrations
 {
     [DbContext(typeof(SqlServerContext))]
-    [Migration("20240127205127_Migrations")]
+    [Migration("20240128200255_Migrations")]
     partial class Migrations
     {
         /// <inheritdoc />
