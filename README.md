@@ -4,7 +4,7 @@
 
 ## Visão Geral  
 
-Este projeto implementa uma API para gerenciamento de uma farmácia, incluindo funcionalidades lojas e produtos.  
+Este projeto implementa uma API para gerenciamento de uma farmácia, incluindo funcionalidades para lojas e produtos.  
 
   
 
